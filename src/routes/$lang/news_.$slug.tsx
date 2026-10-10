@@ -91,7 +91,7 @@ function NewsArticlePage() {
                 </p>
                 <article
                   ref={bodyRef}
-                  className="prose dark:prose-invert max-w-none prose-th:px-4 prose-th:py-2 prose-td:px-4 prose-td:py-2"
+                  className="wysiwyg dark:wysiwyg-invert max-w-none wysiwyg-th:px-4 wysiwyg-th:py-2 wysiwyg-td:px-4 wysiwyg-td:py-2"
                   dangerouslySetInnerHTML={{ __html: article.html }}
                 />
               </>

@@ -2,7 +2,13 @@
 @import 'tw-animate-css';
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
-@plugin '@tailwindcss/typography';
+/* Renamed from the default `prose` class so it does not collide with the
+   `prose` styles Fumadocs UI ships in its preset, which are dark-mode aware.
+   `prettier-ignore` keeps the option key `className` from being lowercased. */
+/* prettier-ignore */
+@plugin '@tailwindcss/typography' {
+  className: wysiwyg;
+}
 
 @custom-variant dark (&:is(.dark *));
 
