@@ -6,11 +6,13 @@ import tailwindcss from '@tailwindcss/vite'
 import mdx from 'fumadocs-mdx/vite'
 import * as MdxConfig from './source.config'
 import { checksumPlugin } from './src/plugins/checksum'
+import { rawNewsPlugin } from './src/plugins/raw-news'
 
 const config = defineConfig({
   plugins: [
     checksumPlugin(),
     mdx(MdxConfig),
+    rawNewsPlugin(),
     viteTsConfigPaths({
       projects: ['./tsconfig.json'],
     }),
