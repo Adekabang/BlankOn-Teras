@@ -8,9 +8,11 @@
  */
 
 import { execSync } from 'child_process'
+import { existsSync } from 'fs'
 import fs from 'fs/promises'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { getSlug, rewriteWikiLinks } from './wiki-links.mjs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -118,6 +120,14 @@ function convertToMdx(content, filename, editPath) {
   // Remove the first # heading from the body — it will be rendered by DocsTitle via frontmatter
   let bodyContent = content.replace(/^#\s+.+\n?/m, '')
 
+  const localeMatch = filename.match(/^.+\.([a-z]{2})\.md$/)
+  bodyContent = rewriteWikiLinks(bodyContent, editPath, {
+    locale: localeMatch && KNOWN_LOCALES.includes(localeMatch[1]) ? localeMatch[1] : 'en',
+    knownLocales: KNOWN_LOCALES,
+    exists: (repoPath) => existsSync(path.join(TEMP_DIR, repoPath)),
+    onMissing: (target) => console.warn(`  ⚠ ${editPath}: link target not found: ${target}`),
+  })
+
   // Escape special MDX characters
   let processedContent = escapeMdxContent(bodyContent)
 
@@ -133,16 +143,6 @@ editPath: ${editPath}
 
 `
   return frontmatter + processedContent
-}
-
-/**
- * Get URL slug from file path
- */
-function getSlug(filePath) {
-  return path.basename(filePath, path.extname(filePath))
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
 }
 
 // Locale codes supported by the i18n config
