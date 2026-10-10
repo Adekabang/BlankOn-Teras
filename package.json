@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.13.8",
+    "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/react-devtools": "^0.7.0",
     "@tanstack/react-router": "^1.132.0",
@@ -31,6 +32,7 @@
     "fumadocs-mdx": "^14.1.0",
     "fumadocs-ui": "^16.2.5",
     "lucide-react": "^0.544.0",
+    "marked": "^18.1.0",
     "mermaid": "^11.12.2",
     "octokit": "^5.0.5",
     "react": "^19.2.0",

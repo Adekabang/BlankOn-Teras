@@ -14,8 +14,10 @@ import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
 import { Route as LangTeamRouteImport } from './routes/$lang/team'
 import { Route as LangRevivalRouteImport } from './routes/$lang/revival'
+import { Route as LangNewsRouteImport } from './routes/$lang/news'
 import { Route as LangDownloadRouteImport } from './routes/$lang/download'
 import { Route as LangWikiSplatRouteImport } from './routes/$lang/wiki/$'
+import { Route as LangNewsSlugRouteImport } from './routes/$lang/news_.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -42,6 +44,11 @@ const LangRevivalRoute = LangRevivalRouteImport.update({
   path: '/$lang/revival',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LangNewsRoute = LangNewsRouteImport.update({
+  id: '/$lang/news',
+  path: '/$lang/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LangDownloadRoute = LangDownloadRouteImport.update({
   id: '/$lang/download',
   path: '/$lang/download',
@@ -52,33 +59,44 @@ const LangWikiSplatRoute = LangWikiSplatRouteImport.update({
   path: '/$lang/wiki/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LangNewsSlugRoute = LangNewsSlugRouteImport.update({
+  id: '/$lang/news_/$slug',
+  path: '/$lang/news/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$lang/download': typeof LangDownloadRoute
+  '/$lang/news': typeof LangNewsRoute
   '/$lang/revival': typeof LangRevivalRoute
   '/$lang/team': typeof LangTeamRoute
   '/api/search': typeof ApiSearchRoute
   '/$lang': typeof LangIndexRoute
+  '/$lang/news/$slug': typeof LangNewsSlugRoute
   '/$lang/wiki/$': typeof LangWikiSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$lang/download': typeof LangDownloadRoute
+  '/$lang/news': typeof LangNewsRoute
   '/$lang/revival': typeof LangRevivalRoute
   '/$lang/team': typeof LangTeamRoute
   '/api/search': typeof ApiSearchRoute
   '/$lang': typeof LangIndexRoute
+  '/$lang/news/$slug': typeof LangNewsSlugRoute
   '/$lang/wiki/$': typeof LangWikiSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$lang/download': typeof LangDownloadRoute
+  '/$lang/news': typeof LangNewsRoute
   '/$lang/revival': typeof LangRevivalRoute
   '/$lang/team': typeof LangTeamRoute
   '/api/search': typeof ApiSearchRoute
   '/$lang/': typeof LangIndexRoute
+  '/$lang/news_/$slug': typeof LangNewsSlugRoute
   '/$lang/wiki/$': typeof LangWikiSplatRoute
 }
 export interface FileRouteTypes {
@@ -86,38 +104,46 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$lang/download'
+    | '/$lang/news'
     | '/$lang/revival'
     | '/$lang/team'
     | '/api/search'
     | '/$lang'
+    | '/$lang/news/$slug'
     | '/$lang/wiki/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$lang/download'
+    | '/$lang/news'
     | '/$lang/revival'
     | '/$lang/team'
     | '/api/search'
     | '/$lang'
+    | '/$lang/news/$slug'
     | '/$lang/wiki/$'
   id:
     | '__root__'
     | '/'
     | '/$lang/download'
+    | '/$lang/news'
     | '/$lang/revival'
     | '/$lang/team'
     | '/api/search'
     | '/$lang/'
+    | '/$lang/news_/$slug'
     | '/$lang/wiki/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LangDownloadRoute: typeof LangDownloadRoute
+  LangNewsRoute: typeof LangNewsRoute
   LangRevivalRoute: typeof LangRevivalRoute
   LangTeamRoute: typeof LangTeamRoute
   ApiSearchRoute: typeof ApiSearchRoute
   LangIndexRoute: typeof LangIndexRoute
+  LangNewsSlugRoute: typeof LangNewsSlugRoute
   LangWikiSplatRoute: typeof LangWikiSplatRoute
 }
 
@@ -158,6 +184,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangRevivalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$lang/news': {
+      id: '/$lang/news'
+      path: '/$lang/news'
+      fullPath: '/$lang/news'
+      preLoaderRoute: typeof LangNewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$lang/download': {
       id: '/$lang/download'
       path: '/$lang/download'
@@ -172,16 +205,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangWikiSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$lang/news_/$slug': {
+      id: '/$lang/news_/$slug'
+      path: '/$lang/news/$slug'
+      fullPath: '/$lang/news/$slug'
+      preLoaderRoute: typeof LangNewsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LangDownloadRoute: LangDownloadRoute,
+  LangNewsRoute: LangNewsRoute,
   LangRevivalRoute: LangRevivalRoute,
   LangTeamRoute: LangTeamRoute,
   ApiSearchRoute: ApiSearchRoute,
   LangIndexRoute: LangIndexRoute,
+  LangNewsSlugRoute: LangNewsSlugRoute,
   LangWikiSplatRoute: LangWikiSplatRoute,
 }
 export const routeTree = rootRouteImport
