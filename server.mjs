@@ -55,6 +55,9 @@ const server = http.createServer((req, res) => {
       })
       fs.createReadStream(filePath).pipe(res)
     } else {
+      // Pages are rendered here, so without this the browser and any proxy in
+      // front may keep serving the previous build's HTML.
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
       ssrHandler(req, res)
     }
   })

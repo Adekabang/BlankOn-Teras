@@ -177,6 +177,7 @@ const translations = {
     home: 'Beranda',
     download: 'Unduh',
     wiki: 'Wiki',
+    news: 'Berita',
     team: 'Tim',
     sponsorship: 'Sponsorship',
     donate: 'Donasi',
@@ -394,6 +395,7 @@ const translations = {
     home: 'Home',
     download: 'Download',
     wiki: 'Wiki',
+    news: 'News',
     team: 'Team',
     sponsorship: 'Sponsorship',
     donate: 'Donate',
@@ -641,6 +643,11 @@ export function baseOptions(
       {
         text: t.wiki,
         url: `/${locale}/wiki/`,
+        active: 'nested-url',
+      },
+      {
+        text: t.news,
+        url: `/${locale}/news`,
         active: 'nested-url',
       },
       {
