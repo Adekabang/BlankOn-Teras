@@ -222,7 +222,7 @@ async function processDirectory(sourceDir, targetDir, basePath = '', originalBas
 }
 
 // Wiki sections whose README is replaced by an auto-generated list of their pages
-const AUTO_INDEX_DIRS = ['userguides']
+const AUTO_INDEX_DIRS = ['UserGuides']
 
 /**
  * Replace the body of each section index with a list of the pages under it

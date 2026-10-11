@@ -7,7 +7,7 @@ import contributorsData from '@/contributors.json'
 
 export const Route = createFileRoute('/$lang/team')({ component: Team })
 
-const CONTRIBUTE_URL = 'https://blankonlinux.id/en/wiki/howtocontribute'
+const CONTRIBUTE_URL = 'https://blankonlinux.id/en/wiki/HowToContribute'
 
 // The pill the home page closes with, in theme tokens rather than the hero's
 // fixed dark palette.

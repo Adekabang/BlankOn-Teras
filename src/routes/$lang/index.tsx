@@ -13,10 +13,10 @@ const STAGING_GIST_URL =
   'https://gist.github.com/herpiko/a1cde839af39636c8bc71929dfa709b9'
 // Praya, the town in Lombok the desktop is named after.
 const PRAYA_WIKI_URL = 'https://en.wikipedia.org/wiki/Praya,_Lombok'
-const PRAYA_GUIDE_URL = 'https://blankonlinux.id/en/wiki/userguides/praya'
+const PRAYA_GUIDE_URL = 'https://blankonlinux.id/en/wiki/UserGuides/Praya'
 // The dictionary entry for the word the release is named after.
 const KBBI_URL = 'https://kbbi.web.id/sinambung'
-const CONTRIBUTE_URL = 'https://blankonlinux.id/en/wiki/howtocontribute'
+const CONTRIBUTE_URL = 'https://blankonlinux.id/en/wiki/HowToContribute'
 const DONATE_URL = 'https://blankon.id/en/donate'
 
 function Home() {
