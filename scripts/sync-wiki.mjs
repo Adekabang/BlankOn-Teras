@@ -49,17 +49,29 @@ async function cloneRepo() {
 }
 
 /**
+ * Turn a CamelCase name into spaced words (QualityAssurance → Quality Assurance)
+ */
+function humanize(name) {
+  return name
+    .replace(/[-_]/g, ' ')
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+}
+
+/**
  * Extract frontmatter from markdown content
  */
 function extractTitle(content, filename) {
   // Try to find first heading
   const headingMatch = content.match(/^#\s+(.+)$/m)
   if (headingMatch) {
-    return headingMatch[1].trim()
+    const heading = headingMatch[1].trim()
+    // A single CamelCase word is a file/folder name, not a real title
+    return /^[A-Za-z0-9]+$/.test(heading) ? humanize(heading) : heading
   }
 
   // Fallback to filename
-  return filename.replace(/\.mdx?$/, '').replace(/[-_]/g, ' ')
+  return humanize(filename.replace(/\.mdx?$/, '').replace(/\.[a-z]{2}$/, ''))
 }
 
 /**
@@ -114,8 +126,8 @@ function escapeMdxContent(content) {
 /**
  * Convert markdown to MDX with frontmatter
  */
-function convertToMdx(content, filename, editPath) {
-  const title = extractTitle(content, filename)
+function convertToMdx(content, filename, editPath, titleOverride) {
+  const title = titleOverride || extractTitle(content, filename)
 
   // Remove the first # heading from the body — it will be rendered by DocsTitle via frontmatter
   let bodyContent = content.replace(/^#\s+.+\n?/m, '')
@@ -167,19 +179,27 @@ async function processDirectory(sourceDir, targetDir, basePath = '', originalBas
       const slug = getSlug(entry.name)
       const newTargetDir = path.join(targetDir, slug)
       await fs.mkdir(newTargetDir, { recursive: true })
+      // Folder titles come from the original CamelCase name, since slugs are lowercased
+      await fs.writeFile(
+        path.join(newTargetDir, 'meta.json'),
+        JSON.stringify({ title: humanize(entry.name) }, null, 2),
+        'utf-8'
+      )
       await processDirectory(sourcePath, newTargetDir, path.join(basePath, slug), path.join(originalBasePath, entry.name))
     } else if (entry.isFile() && entry.name.endsWith('.md')) {
       // Convert markdown file to MDX
       const originalRelPath = path.join(originalBasePath, entry.name).replace(/\\/g, '/')
       const content = await fs.readFile(sourcePath, 'utf-8')
-      const mdxContent = convertToMdx(content, entry.name, originalRelPath)
+      const isReadme = entry.name.toLowerCase() === 'readme.md'
+      const dirTitle = isReadme && originalBasePath ? humanize(path.basename(originalBasePath)) : undefined
+      const mdxContent = convertToMdx(content, entry.name, originalRelPath, dirTitle)
 
       // Detect locale suffix: e.g. WikiGuidelines.id.md → base=wikiguidelines, locale=id
       const localeMatch = entry.name.match(/^(.+)\.([a-z]{2})\.md$/)
       const isLocaleFile = localeMatch && KNOWN_LOCALES.includes(localeMatch[2])
 
       let targetPath
-      if (entry.name.toLowerCase() === 'readme.md') {
+      if (isReadme) {
         targetPath = path.join(targetDir, 'index.mdx')
       } else if (isLocaleFile) {
         // Place as index.{locale}.mdx inside the base slug directory
@@ -198,6 +218,47 @@ async function processDirectory(sourceDir, targetDir, basePath = '', originalBas
       await fs.writeFile(targetPath, mdxContent, 'utf-8')
       console.log(`  ✓ ${path.relative(WIKI_DIR, targetPath)}`)
     }
+  }
+}
+
+// Wiki sections whose README is replaced by an auto-generated list of their pages
+const AUTO_INDEX_DIRS = ['userguides']
+
+/**
+ * Replace the body of each section index with a list of the pages under it
+ */
+async function generateIndexes() {
+  console.log('\n📑 Generating section indexes...')
+
+  for (const dir of AUTO_INDEX_DIRS) {
+    const sectionDir = path.join(WIKI_DIR, dir)
+    const indexPath = path.join(sectionDir, 'index.mdx')
+
+    let index
+    try {
+      index = await fs.readFile(indexPath, 'utf-8')
+    } catch (error) {
+      if (error.code === 'ENOENT') continue
+      throw error
+    }
+
+    const entries = await fs.readdir(sectionDir, { withFileTypes: true })
+    const items = []
+    for (const entry of entries.filter((e) => e.isDirectory())) {
+      try {
+        const page = await fs.readFile(path.join(sectionDir, entry.name, 'index.mdx'), 'utf-8')
+        const title = page.match(/^title:\s*(.+)$/m)?.[1].trim() ?? humanize(entry.name)
+        items.push({ title, href: `/en/wiki/${dir}/${entry.name}` })
+      } catch (error) {
+        if (error.code !== 'ENOENT') throw error
+      }
+    }
+    items.sort((a, b) => a.title.localeCompare(b.title))
+
+    const frontmatter = index.match(/^---\n[\s\S]*?\n---\n/)[0]
+    const list = items.map((item) => `- [${item.title}](${item.href})`).join('\n')
+    await fs.writeFile(indexPath, `${frontmatter}\n${list}\n`, 'utf-8')
+    console.log(`  ✓ ${dir}/index.mdx lists ${items.length} pages`)
   }
 }
 
@@ -270,6 +331,9 @@ async function main() {
     // Step 3: Process markdown files
     console.log('\n📝 Converting markdown files to MDX...')
     await processDirectory(TEMP_DIR, WIKI_DIR)
+
+    // Step 3b: Auto-generate section indexes
+    await generateIndexes()
 
     // Step 4: Copy assets
     await copyAssets()
