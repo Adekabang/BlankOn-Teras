@@ -893,9 +893,9 @@ export default function LaptopScroll({
                 {copy.creditLink} &rarr;
               </Link>
             </p>
-            {/* The three ways in. They stack on a narrow viewport rather
-                than shrinking to fit. */}
-            <div className="flex flex-wrap items-center justify-center gap-3">
+            {/* The four ways in: one row, or one column when the viewport is
+                too narrow for all four, never a wrapped mix. */}
+            <div className="flex flex-col items-center justify-center gap-3 lg:flex-row">
               <Link
                 to="/$lang/download"
                 params={{ lang }}
@@ -938,7 +938,7 @@ export default function LaptopScroll({
 // The closing calls to action. The panels ignore the pointer so they never
 // block the canvas; these opt back in.
 const CTA_CLASS =
-  'pointer-events-auto min-w-[9.5rem] rounded-full border border-white/15 bg-white/5 px-8 py-4 text-[17px] font-medium text-[#e7e9ee] transition hover:-translate-y-px hover:border-[#7aa8ff]/50 hover:bg-[#7aa8ff]/15 max-sm:w-full'
+  'pointer-events-auto min-w-[9.5rem] rounded-full border border-white/15 bg-white/5 px-8 py-4 text-[17px] font-medium text-[#e7e9ee] transition hover:-translate-y-px hover:border-[#7aa8ff]/50 hover:bg-[#7aa8ff]/15 max-lg:w-full max-lg:max-w-xs'
 
 // The desktop is named after a town, so the name carries a link out to it
 // wherever the copy mentions it.
