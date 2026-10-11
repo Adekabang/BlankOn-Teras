@@ -9,13 +9,12 @@ const LINK_REGEX = /(!?)\[([^\]]*)\]\(([^)\s]+)(\s+"[^"]*")?\)/g
 export function getSlug(filePath) {
   return path
     .basename(filePath, path.extname(filePath))
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/[^a-zA-Z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
 }
 
 /**
- * Get the site URL of a wiki file, e.g. `UserGuides/Docker.md` → `/en/wiki/userguides/docker`.
+ * Get the site URL of a wiki file, e.g. `UserGuides/Docker.md` → `/en/wiki/UserGuides/Docker`.
  * Mirrors where processDirectory() writes each page.
  */
 export function wikiUrl(repoPath, locale, knownLocales) {

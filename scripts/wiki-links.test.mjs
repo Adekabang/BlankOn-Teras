@@ -24,16 +24,16 @@ const rewrite = (content, sourcePath, locale = 'en') => {
 
 describe('wikiUrl', () => {
   it('maps pages, READMEs and locale files to their site URLs', () => {
-    expect(wikiUrl('Goals.md', 'en', ['en', 'id'])).toBe('/en/wiki/goals')
+    expect(wikiUrl('Goals.md', 'en', ['en', 'id'])).toBe('/en/wiki/Goals')
     expect(wikiUrl('UserGuides/SecureBoot.md', 'en', ['en', 'id'])).toBe(
-      '/en/wiki/userguides/secureboot',
+      '/en/wiki/UserGuides/SecureBoot',
     )
     expect(wikiUrl('UserGuides/README.md', 'en', ['en', 'id'])).toBe(
-      '/en/wiki/userguides',
+      '/en/wiki/UserGuides',
     )
     expect(wikiUrl('README.md', 'en', ['en', 'id'])).toBe('/en/wiki')
     expect(wikiUrl('WikiGuidelines.id.md', 'en', ['en', 'id'])).toBe(
-      '/id/wiki/wikiguidelines',
+      '/id/wiki/WikiGuidelines',
     )
   })
 })
@@ -42,16 +42,16 @@ describe('rewriteWikiLinks', () => {
   it('rewrites links relative to the current page', () => {
     expect(
       rewrite('[Docker](./Docker.md)', 'UserGuides/README.md').result,
-    ).toBe('[Docker](/en/wiki/userguides/docker)')
+    ).toBe('[Docker](/en/wiki/UserGuides/Docker)')
     expect(rewrite('[Goals](Goals.md)', 'Glossary.md').result).toBe(
-      '[Goals](/en/wiki/goals)',
+      '[Goals](/en/wiki/Goals)',
     )
     expect(
       rewrite('[Secure Boot](../UserGuides/SecureBoot.md)', 'Releases/Page.md')
         .result,
-    ).toBe('[Secure Boot](/en/wiki/userguides/secureboot)')
+    ).toBe('[Secure Boot](/en/wiki/UserGuides/SecureBoot)')
     expect(rewrite('[Goals](/Goals.md)', 'UserGuides/Docker.md').result).toBe(
-      '[Goals](/en/wiki/goals)',
+      '[Goals](/en/wiki/Goals)',
     )
   })
 
@@ -59,7 +59,7 @@ describe('rewriteWikiLinks', () => {
     expect(
       rewrite('[Sid](../Glossary.md#debian-sid)', 'UserGuides/Docker.md', 'id')
         .result,
-    ).toBe('[Sid](/id/wiki/glossary#debian-sid)')
+    ).toBe('[Sid](/id/wiki/Glossary#debian-sid)')
   })
 
   it('leaves external links, anchors, images and code unchanged', () => {
