@@ -267,7 +267,24 @@ function Revival() {
         {/* The revival is done: the notice, and the people who did it. */}
         <section className="mx-auto w-full max-w-3xl px-4">
           <div className="rounded-lg border border-yellow-400/40 bg-yellow-400/10 px-4 py-3 text-sm text-yellow-700 dark:text-yellow-300">
-            {t.homepage.revivalComplete}
+            <p>{t.homepage.revivalComplete}</p>
+            <p className="mt-2">
+              {t.homepage.revivalContribute}{' '}
+              <a
+                href={`/${lang}/wiki/HowToContribute`}
+                className="font-medium underline underline-offset-4"
+              >
+                {t.homepage.revivalContributeLink} &rarr;
+              </a>
+            </p>
+            <p className="mt-2">
+              <a
+                href={`/${lang}/wiki/Contributors`}
+                className="font-medium underline underline-offset-4"
+              >
+                {t.homepage.revivalContributors} &rarr;
+              </a>
+            </p>
           </div>
         </section>
 

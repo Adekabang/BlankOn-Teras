@@ -266,6 +266,10 @@ const translations = {
       teamTitle: 'Tim Revival',
       revivalComplete:
         'Per 12 September 2026, upaya revival dinyatakan selesai. Terima kasih kepada seluruh kontributor, donatur, dan sponsor revival, serta komunitas yang masih mempercayai visi kami.',
+      revivalContribute:
+        'Perjalanan BlankOn belum berakhir. Siapa pun bisa ikut berkontribusi, mulai dari kode, dokumentasi, terjemahan, desain, hingga pengujian.',
+      revivalContributeLink: 'Pelajari cara berkontribusi',
+      revivalContributors: 'Lihat anggota tim yang terus bertambah',
       sponsorsTitle: 'Sponsor',
       faqTitle: 'Tanya Ini Lagi Itu Lagi (TILIL)',
       faq: {
@@ -485,6 +489,10 @@ const translations = {
       teamTitle: 'The Revival Team',
       revivalComplete:
         'As of September 12, 2026, the revival is considered complete. Our thanks go to every contributor, donor and sponsor of the revival, and to the community who still trust our vision.',
+      revivalContribute:
+        'The journey of BlankOn is far from over. Anyone can join in, whether with code, documentation, translation, design or testing. Your contribution keeps the distro alive.',
+      revivalContributeLink: 'Learn how to contribute',
+      revivalContributors: 'See the growing team members',
       sponsorsTitle: 'Sponsors',
       faqTitle: 'FAQ',
       faq: {
